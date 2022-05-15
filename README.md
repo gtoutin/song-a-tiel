@@ -4,7 +4,7 @@ Lookup songs and bands and discover new ones
 
 ## Roadmap
 - [ ] Figure out which endpoints will give the info needed and update the endpoints list with that info
-- [ ] Set up the docker container
+- [X] Set up the docker container
 - [ ] Makefile
 - [ ] Set up the Flask app
 
