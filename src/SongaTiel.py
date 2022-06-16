@@ -18,8 +18,7 @@ class SongaTiel():
         pass
 
     def search(self, song='', album='', artist=''):
-        '''Searches for a song, album, or artist'''
-
+        '''Searches for a song, album, and/or artist'''
 
         ## Follow the rules to determine which function to use
         if song:  # song + anything = song

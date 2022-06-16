@@ -6,11 +6,12 @@ build-docker:
 	.
 
 run-docker:
-	docker run -it -d --rm \
+	docker run -it -d \
 	--name song-a-tiel-backend \
 	-v `pwd`:/song-a-tiel \
 	-w /song-a-tiel \
 	-p 5000:5000 \
+	--entrypoint '' \
 	song-a-tiel-backend bash
 
 exec-docker:
