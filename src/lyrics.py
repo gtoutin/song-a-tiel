@@ -1,7 +1,7 @@
 """
 Functions for interacting with the ChartLyrics API for getting lyrics
 
-The album, artist to search lyrics for are REQUIRED query params to SearchLyric
+The artist, song to search lyrics for are REQUIRED query params to SearchLyric
 The lyricId and lyricCheckSum are query params to GetLyric
 """
 
@@ -77,12 +77,12 @@ class Lyrics():
             params: any query params that might be present'''
 
         response = requests.get(LYRICS_BASE_URL + path, params=params)
-        # print(response.text)
+
         if response.status_code != 200:
             print('Page error.')
             return False
+
         # translate XML (gross) to JSON
         data = xmltodict.parse(response.text)
-        # print(data)
 
         return data

@@ -7,11 +7,7 @@ Usage:
 - pass any of album, song, artist to the search method
 """
 
-from enum import Enum
-
-
-class Type(Enum):
-    SONG, ALBUM, ARTIST = 1, 2, 3
+from infotype import Type
 
 class SongaTiel():
     def __init__(self):
@@ -23,7 +19,7 @@ class SongaTiel():
         ## Follow the rules to determine which function to use
         if song:  # song + anything = song
             # use other specified things if they are there
-            resultData = self.song(song, album=album, artist=artist)
+            resultData = self._song(song, album=album, artist=artist)
         # album and artist, return info about album
         else:
             if album:  # no song + album = album

@@ -6,13 +6,15 @@ SpotifyWrapper.
 """
 
 import requests
-
-SPOTIFY_BASE_URL = ''
-
+from infotype import Type
 
 
+SPOTIFY_BASE_URL = 'https://api.spotify.com/v1/'
 
-def get_id(q):
+
+
+
+def _get_id(q):
     """
     Query Spotify API for the ID you need to interact with other endpoints
     Input: q, a query string for the search
@@ -21,31 +23,53 @@ def get_id(q):
     pass
 
 
-def query_str(filters=[], query=''):
-    """
-    Create a query string to put in the Spotify search
-    Inputs:
-    - filters: a list of filters. 
-      possible ones are 
-      album, artist, track, year, upc, tag:hipster, tag:new, isrc, and genre
-    """
-    search_str = ','.join(filters) + ' ' + query
-    return search_str
-
-
-
 
 class SpotifyWrapper():
-    def __init__():
+    def __init__(self):
         pass
 
-    def request(endpoint, base_url=SPOTIFY_BASE_URL):
+    def request(self, endpoint, base_url=SPOTIFY_BASE_URL):
         pass
 
 
-    def search(q='', types=['album','artist','track']):
+    def search(self, infoType, song='', album='', artist=''):
         """
-        Hits the search endpoint
+        SongaTiel uses this directly.
+        Inputs: type, song, album, artist.
+        - infotype is an instance of Type. example: Type.SONG
+        Output: all necessary info.
+        """
+
+        assert any([song, album, artist]), 'Must provide a song, album, or artist'
+
+        ## Format query string
+        filterArgs = {
+            "song": song,
+            "album": album,
+            "artist": artist
+        }
+        # yeet empty arguments
+        filters = [ filterArgs[arg] for arg in filterArgs if filterArgs[arg] ]
+        try:
+            mainType = filterArgs[infoType.name.lower()]
+        except:
+            print("Item to search for must not be empty.")
+            raise ValueError
+
+        q = self._make_query_str(filters, )
+
+        params = {
+            "q": q,
+            "type": infoType.name.lower()
+        }
+        # Hit the search endpoint. type=infoType, other params used in query string q
+
+        # Use infoType to determine which endpoint to hit after searching for id
+
+
+    def _run_search(self, q='', types=['album','artist','track']):
+        """
+        Hits the search endpoint.
         Inputs:
         - q: a search string ready to put into the API
         - types: a list of types of item to search for.
@@ -54,3 +78,30 @@ class SpotifyWrapper():
 
         """
         pass
+
+
+    def _runQuery(self, path, params={}):
+        '''Helper function to actually do the query.
+        Inputs:
+            path: the path of the Spotify API
+            params: any query params that might be present'''
+
+        response = requests.get(SPOTIFY_BASE_URL + path, params=params)
+
+        if response.status_code != 200:
+            print('Page error.')
+            return False
+
+        return response.json()
+
+
+    def _make_query_str(filters=[], query=''):
+        """
+        Create a query string to put in the Spotify search
+        Inputs:
+        - filters: a list of filters. 
+        possible ones are 
+        album, artist, track, year, upc, tag:hipster, tag:new, isrc, and genre
+        """
+        search_str = ','.join(filters) + ' ' + query
+        return search_str
