@@ -22,9 +22,9 @@ class Lyrics():
     def get(self, song, artist):
         '''Get lyrics given song title and artist name'''
 
-        assert(any([song, artist]))
+        assert any([song, artist]), 'Must provide both song and artist'
 
-        # format params
+        # format params for SearchLyric
         params = {
             "song": song,
             "artist": artist
@@ -32,15 +32,10 @@ class Lyrics():
 
         # do SearchLyric query. get list of songs
         searchResult = self._runQuery("SearchLyric", params)['ArrayOfSearchLyricResult']['SearchLyricResult']
-        # trim off the lyricId = 0 ones
-        # try:
-        # print(searchResult)
 
         try:
-            # [print(result) for result in searchResult if result.get('LyricId') not in ['0', None]]
             # dict of {song title: song json}. exclude lyricid=0 and anything that doesn't have lyricid
             validSongs = {result['Song']: result for result in searchResult if result.get('LyricId') not in ['0', None]}
-            print(f'validSongs {validSongs}')
         except:
             print('No lyrics found.')
             return ''
@@ -52,24 +47,34 @@ class Lyrics():
         
         # figure out which ArrayOfSearchLyricResult.SearchLyricResult.Song most closely matches song
         titles = validSongs.keys()
-        print(titles)
         match = get_close_matches(song, titles, n=1, cutoff=0)[0]
-        print(match)
+
         # get lyricId and lyricCheckSum of that one
         matchSong = validSongs[match]
         lyricId, lyricCheckSum = matchSong['LyricId'], matchSong['LyricChecksum']
-        print(lyricId, lyricCheckSum)
 
         ## ------------------------------
-        # do GetLyric query
-        # get GetLyricResult.Lyric
+        # set params for GetLyric query
+        params = {
+            "lyricId": lyricId,
+            "lyricCheckSum": lyricCheckSum
+        }
 
+        try:
+            # do GetLyric query and get the lyric
+            lyrics = self._runQuery("GetLyric", params)['GetLyricResult']['Lyric']
+        except:
+            print('Lyrics for the song not found.')
+            return ''
 
-        
-        return "lyrics"
+        return lyrics
 
 
     def _runQuery(self, path, params={}):
+        '''Helper function to actually do the query.
+        Inputs:
+            path: the path of the ChartLyrics API
+            params: any query params that might be present'''
 
         response = requests.get(LYRICS_BASE_URL + path, params=params)
         # print(response.text)
@@ -78,6 +83,6 @@ class Lyrics():
             return False
         # translate XML (gross) to JSON
         data = xmltodict.parse(response.text)
-        print(data)
+        # print(data)
 
         return data
