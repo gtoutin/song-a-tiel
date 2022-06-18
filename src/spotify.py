@@ -49,19 +49,23 @@ class SpotifyWrapper():
             "artist": artist
         }
         # yeet empty arguments
-        filters = [ filterArgs[arg] for arg in filterArgs if filterArgs[arg] ]
+        filters = { arg:filterArgs[arg] for arg in filterArgs if filterArgs[arg] }
         try:
-            mainType = filterArgs[infoType.name.lower()]
+            # get the item the user is looking for
+            mainArg = filterArgs[infoType.name.lower()]
         except:
             print("Item to search for must not be empty.")
             raise ValueError
 
-        q = self._make_query_str(filters, )
+        q = self._make_query_str(filters, mainArg)
+
+        print(q)
 
         params = {
             "q": q,
             "type": infoType.name.lower()
         }
+
         # Hit the search endpoint. type=infoType, other params used in query string q
 
         # Use infoType to determine which endpoint to hit after searching for id
@@ -95,7 +99,7 @@ class SpotifyWrapper():
         return response.json()
 
 
-    def _make_query_str(filters=[], query=''):
+    def _make_query_str(self, filters={}, query=''):
         """
         Create a query string to put in the Spotify search
         Inputs:
@@ -103,5 +107,11 @@ class SpotifyWrapper():
         possible ones are 
         album, artist, track, year, upc, tag:hipster, tag:new, isrc, and genre
         """
-        search_str = ','.join(filters) + ' ' + query
+
+        search_str = query + ' '
+        for filterType in filters:
+            search_str += f'{filterType}:{filters[filterType]}+'
+        if search_str[-1] == '+':
+            search_str = search_str[:-1]  # remove last +
+
         return search_str
