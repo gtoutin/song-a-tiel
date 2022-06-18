@@ -5,12 +5,15 @@ intended use:
 SpotifyWrapper.
 """
 
+import os
 import requests
+import urllib.parse
 from infotype import Type
+from base64 import b64encode
 
 
 SPOTIFY_BASE_URL = 'https://api.spotify.com/v1/'
-
+SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/api/token'
 
 
 
@@ -32,7 +35,7 @@ class SpotifyWrapper():
         pass
 
 
-    def search(self, infoType, song='', album='', artist=''):
+    def search(self, infoTypeRaw, song='', album='', artist=''):
         """
         SongaTiel uses this directly.
         Inputs: type, song, album, artist.
@@ -42,9 +45,14 @@ class SpotifyWrapper():
 
         assert any([song, album, artist]), 'Must provide a song, album, or artist'
 
+        if infoTypeRaw is Type.SONG:
+            infoType = "track"
+        else:
+            infoType = infoTypeRaw.name.lower()
+
         ## Format query string
         filterArgs = {
-            "song": song,
+            "track": song,  # Spotify calls a song a track
             "album": album,
             "artist": artist
         }
@@ -52,21 +60,23 @@ class SpotifyWrapper():
         filters = { arg:filterArgs[arg] for arg in filterArgs if filterArgs[arg] }
         try:
             # get the item the user is looking for
-            mainArg = filterArgs[infoType.name.lower()]
+            mainArg = filterArgs[infoType]
         except:
             print("Item to search for must not be empty.")
             raise ValueError
 
         q = self._make_query_str(filters, mainArg)
 
-        print(q)
+        # print(q)
 
         params = {
             "q": q,
-            "type": infoType.name.lower()
+            "type": infoType,
         }
 
         # Hit the search endpoint. type=infoType, other params used in query string q
+        searchJson = self._runQuery('search', params)
+        print(searchJson)
 
         # Use infoType to determine which endpoint to hit after searching for id
 
@@ -90,13 +100,42 @@ class SpotifyWrapper():
             path: the path of the Spotify API
             params: any query params that might be present'''
 
-        response = requests.get(SPOTIFY_BASE_URL + path, params=params)
+        # HANDLE AUTH
+        token = self._handle_auth()
+        print(token)
 
-        if response.status_code != 200:
+        response = requests.get(SPOTIFY_BASE_URL + path, params=params, headers={'Authorization':f'Bearer {token}'})
+        print(response.json())
+
+        if not response.ok:
             print('Page error.')
             return False
 
+        print(response.url)
         return response.json()
+
+
+    def _handle_auth(self):
+        """Handles Spotify API authorization.
+        Uses the env vars to get a token already encoded in b64"""
+        auth_str = f"{os.environ['SPOTIFY_CLIENT_ID']}:{os.environ['SPOTIFY_CLIENT_SECRET']}"
+        auth_encoded = b64encode(auth_str.encode())
+        # print(auth_str)
+        # print(auth_encoded)
+        print(auth_encoded.decode())
+        response = requests.post(SPOTIFY_AUTH_URL,
+            headers={
+                "Authorization": "Basic " + auth_encoded.decode(),
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            data={
+                "grant_type": "client_credentials"
+            }
+        )
+        
+        assert response.ok, "Could not get Spotify API token."
+
+        return response.json()['access_token']
 
 
     def _make_query_str(self, filters={}, query=''):
@@ -110,8 +149,10 @@ class SpotifyWrapper():
 
         search_str = query + ' '
         for filterType in filters:
-            search_str += f'{filterType}:{filters[filterType]}+'
-        if search_str[-1] == '+':
-            search_str = search_str[:-1]  # remove last +
+            search_str += f'{filterType}:{filters[filterType]} '
+
+        print()
+        print(search_str)
+        print(urllib.parse.quote_plus(search_str))
 
         return search_str
