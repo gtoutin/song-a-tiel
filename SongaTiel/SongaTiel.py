@@ -49,12 +49,13 @@ class SongaTiel():
         return {
             "type": Type.SONG.name,
             "data": {
+                "name": songInfo.get('name',''),
                 "artist": songInfo.get('artist',''),
                 "album": songInfo.get('album',''),
-                "year": "",
+                "release_date": songInfo.get('release_date',''),
                 "lyrics": lyrics,
                 "length": songInfo.get('length',''),
-                "related_songs": []
+                "related_songs": songInfo.get('related_songs',[])
             }
         }
 

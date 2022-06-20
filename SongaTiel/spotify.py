@@ -119,11 +119,6 @@ class SpotifyWrapper():
             
             if artistJson[0].get('id') and artistJson[0].get('genres'):
                 artist_id, artist_genres = artistJson[0].get('id'), artistJson[0].get('genres')
-                print({
-                        "seed_artists": artist_id,
-                        "seed_genres": artist_genres[0],
-                        "seed_tracks": trackJson['id']
-                    })
                 relatedJson = self._runQuery(f'recommendations',
                     params={
                         "seed_artists": artist_id,
@@ -134,7 +129,6 @@ class SpotifyWrapper():
                 related_songs = {track.get('name',''):[artist.get('name') for artist in track.get('artists',[]) if artist.get('name')]
                     for track in relatedJson['tracks']}
             else:
-                print(artistJson[0].get('genres'))
                 related_songs = []
         else:
             related_songs = []
