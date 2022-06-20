@@ -11,6 +11,8 @@ Lookup songs and bands and discover new ones
 ## FUTURE WORK
 - [ ] Fix length (duration) formatting
 - [ ] Implement error responses. aka say no results instead of regular format w empty strings
+    - [ ] Related: cleanly handle errors. I have assertion errors for now
+- [ ] Make module runnable. aka `python3 -m SongaTiel --whatever-args` or better yet `./SongaTiel --whatever`
 
 ## Endpoints
 - [ ] /artist/{name}/similar

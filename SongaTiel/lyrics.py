@@ -31,7 +31,7 @@ class Lyrics():
         }
 
         # do SearchLyric query. get list of songs
-        searchResult = self._runQuery("SearchLyric", params)['ArrayOfSearchLyricResult']['SearchLyricResult']
+        searchResult = self._runQuery("SearchLyric", params).get('ArrayOfSearchLyricResult',{}).get('SearchLyricResult', [])
 
         try:
             # dict of {song title: song json}. exclude lyricid=0 and anything that doesn't have lyricid
@@ -80,7 +80,7 @@ class Lyrics():
 
         if response.status_code != 200:
             print('Page error.')
-            return False
+            return {}
 
         # translate XML (gross) to JSON
         data = xmltodict.parse(response.text)

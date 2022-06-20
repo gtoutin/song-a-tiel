@@ -37,20 +37,25 @@ class SongaTiel():
         sp = SpotifyWrapper()
         songInfo = sp.search(Type.SONG, song, album, artist)
 
+        # For reuse in lyrics search
+        song_name = songInfo.get('name','')
+        artist_name = songInfo.get('artist','')
+
         # Only get lyrics if Spotify actually found a song
         # Otherwise the lyrics are probably wrong
         if songInfo:
             # Get lyrics
             ly = Lyrics()
-            lyrics = ly.get(song, artist)
+            # Use more accurate spotify names
+            lyrics = ly.get(song_name, artist_name)
         else:
             lyrics = ""
 
         return {
             "type": Type.SONG.name,
             "data": {
-                "name": songInfo.get('name',''),
-                "artist": songInfo.get('artist',''),
+                "name": song_name,
+                "artist": artist_name,
                 "album": songInfo.get('album',''),
                 "release_date": songInfo.get('release_date',''),
                 "lyrics": lyrics,
