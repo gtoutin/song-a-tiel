@@ -105,22 +105,54 @@ class SpotifyWrapper():
     def _track(self, trackJson):
         name = trackJson['name']
         artist = trackJson['artists'][0]['name']
+        release_date = trackJson['album']['release_date']
         album = trackJson['album']['name']
         length = str(datetime.timedelta(seconds=trackJson['duration_ms']/1000))
+
+        # Try to get related songs
+        if trackJson.get('artists'):
+            artistJson = trackJson.get('artists')
+
+            # FIXME: hardcoded in for the demo since most artists seem to not have genres returned here despite the spotify docs
+            if not artistJson[0].get('genres'):
+                artistJson[0]['genres'] = ['geek rock']
+            
+            if artistJson[0].get('id') and artistJson[0].get('genres'):
+                artist_id, artist_genres = artistJson[0].get('id'), artistJson[0].get('genres')
+                print({
+                        "seed_artists": artist_id,
+                        "seed_genres": artist_genres[0],
+                        "seed_tracks": trackJson['id']
+                    })
+                relatedJson = self._runQuery(f'recommendations',
+                    params={
+                        "seed_artists": artist_id,
+                        "seed_genres": artist_genres[0],
+                        "seed_tracks": trackJson['id']
+                    }
+                )
+                related_songs = {track.get('name',''):[artist.get('name') for artist in track.get('artists',[]) if artist.get('name')]
+                    for track in relatedJson['tracks']}
+            else:
+                print(artistJson[0].get('genres'))
+                related_songs = []
+        else:
+            related_songs = []
+
         return {
             "name": name or "",
             "artist": artist or "",
             "album": album or "",
-            "year": "",
+            "release_date": release_date or "",
             "length": length or "",
-            "related_songs":""
+            "related_songs": related_songs
         }
     
 
     def _album(self, albumJson):
         name = albumJson['name']
         artist = albumJson['artists'][0]['name']
-        date_released = albumJson['release_date']
+        release_date = albumJson['release_date']
         tracklist = [track['name'] for track in albumJson['tracks']['items']]
         tracks_duration = [track['duration_ms'] for track in albumJson['tracks']['items']]
         album_duration = sum(tracks_duration) / 1000  # the track durations are in ms. convert to s
@@ -129,7 +161,7 @@ class SpotifyWrapper():
             "artist": artist,
             "tracklist": tracklist,
             "length": str(datetime.timedelta(seconds=album_duration)),
-            "date_released": date_released
+            "release_date": release_date
         }
 
     
@@ -171,16 +203,16 @@ class SpotifyWrapper():
 
         # HANDLE AUTH
         token = self._handle_auth()
-        print(token)
+        # print(token)
 
         response = requests.get(SPOTIFY_BASE_URL + path, params=params, headers={'Authorization':f'Bearer {token}'})
-        print(response.json())
+        # print(response.json())
 
         if not response.ok:
             print('Page error.')
             exit
 
-        print(response.url)
+        # print(response.url)
         return response.json()
 
 
