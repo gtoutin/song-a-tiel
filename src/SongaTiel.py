@@ -8,6 +8,8 @@ Usage:
 """
 
 from infotype import Type
+from spotify import SpotifyWrapper
+from lyrics import Lyrics
 
 class SongaTiel():
     def __init__(self):
@@ -31,14 +33,22 @@ class SongaTiel():
 
     
     def _song(self, song, album='', artist=''):
+        # Get info from Spotify
+        sp = SpotifyWrapper()
+        songInfo = sp.search(Type.SONG, song, album, artist)
+
+        # Get lyrics
+        ly = Lyrics()
+        lyrics = ly.get(song, artist)
+
         return {
             "type": Type.SONG.name,
             "data": {
-                "artist": "",
-                "album": "",
-                "year": 0000,
-                "lyrics": "",
-                "length": "",
+                "artist": songInfo.get('artist'),
+                "album": songInfo.get('album'),
+                "year": "",
+                "lyrics": lyrics,
+                "length": songInfo.get('length'),
                 "related_songs": []
             }
         }

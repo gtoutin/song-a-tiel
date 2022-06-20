@@ -10,20 +10,11 @@ import requests
 import urllib.parse
 from infotype import Type
 from base64 import b64encode
+import datetime
 
 
 SPOTIFY_BASE_URL = 'https://api.spotify.com/v1/'
 SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/api/token'
-
-
-
-def _get_id(q):
-    """
-    Query Spotify API for the ID you need to interact with other endpoints
-    Input: q, a query string for the search
-    """
-    # TODO: fill in
-    pass
 
 
 
@@ -44,15 +35,16 @@ class SpotifyWrapper():
         """
 
         assert any([song, album, artist]), 'Must provide a song, album, or artist'
+        assert isinstance(infoTypeRaw, Type), 'Info type is not an enumeration'
 
         if infoTypeRaw is Type.SONG:
-            infoType = "track"
+            infoType = "track"  # Spotify calls a song a track
         else:
             infoType = infoTypeRaw.name.lower()
 
         ## Format query string
         filterArgs = {
-            "track": song,  # Spotify calls a song a track
+            "track": song,
             "album": album,
             "artist": artist
         }
@@ -66,32 +58,71 @@ class SpotifyWrapper():
             raise ValueError
 
         q = self._make_query_str(filters, mainArg)
-
         # print(q)
 
         params = {
             "q": q,
             "type": infoType,
         }
+        print(params)
 
         # Hit the search endpoint. type=infoType, other params used in query string q
         searchJson = self._runQuery('search', params)
         print(searchJson)
 
-        # Use infoType to determine which endpoint to hit after searching for id
+        # Pull out the Spotify ID
+        try:
+            spotify_id = searchJson[f'{infoType}s']['items'][0]['id']
+            # print(spotify_id)
+        except:
+            print('No results.')
+            return
 
+        # Hit the appropriate endpoint for the information type now that the ID is known
+        infoJson = self._runQuery(f'{infoType}s/{spotify_id}')
+        # print(infoJson)
 
-    def _run_search(self, q='', types=['album','artist','track']):
-        """
-        Hits the search endpoint.
-        Inputs:
-        - q: a search string ready to put into the API
-        - types: a list of types of item to search for.
-        possible ones are
-        album, artist, playlist, track, show, episode
+        # Use infoType to clean up the JSON and prep for return to the user
+        if infoType == "track":
+            print(self._track(infoJson))
+            return self._track(infoJson)
+        elif infoType == "album":
+            print(self._album(infoJson))
+            return self._album(infoJson)
+        else:
+            print(self._artist(infoJson))
+            return self._artist(infoJson)
+    
 
-        """
-        pass
+    def _track(self, trackJson):
+        name = trackJson['name']
+        artist = trackJson['artists'][0]['name']
+        album = trackJson['album']['name']
+        length = str(datetime.timedelta(seconds=trackJson['duration_ms']/1000))
+        return {
+            "name": name,
+            "artist": artist,
+            "album": album,
+            "year": "",
+            "length": length,
+            "related_songs":""
+        }
+    
+
+    def _album(self, albumJson):
+        name = albumJson['name']
+        artist = albumJson['artists'][0]['name']
+        date_released = albumJson['release_date']
+        tracklist = [track['name'] for track in albumJson['tracks']['items']]
+        tracks_duration = [track['duration_ms'] for track in albumJson['tracks']['items']]
+        album_duration = sum(tracks_duration) / 1000  # the track durations are in ms. convert to s
+        return {
+            "name": name,
+            "artist": artist,
+            "tracklist": tracklist,
+            "length": str(datetime.timedelta(seconds=album_duration)),
+            "date_released": date_released
+        }
 
 
     def _runQuery(self, path, params={}):
@@ -102,27 +133,29 @@ class SpotifyWrapper():
 
         # HANDLE AUTH
         token = self._handle_auth()
-        print(token)
+        # print(token)
 
         response = requests.get(SPOTIFY_BASE_URL + path, params=params, headers={'Authorization':f'Bearer {token}'})
-        print(response.json())
+        # print(response.json())
 
         if not response.ok:
             print('Page error.')
             return False
 
-        print(response.url)
+        # print(response.url)
         return response.json()
 
 
     def _handle_auth(self):
-        """Handles Spotify API authorization.
-        Uses the env vars to get a token already encoded in b64"""
+        """
+        Handles Spotify API authorization.
+        Uses the env vars to get a token
+        """
         auth_str = f"{os.environ['SPOTIFY_CLIENT_ID']}:{os.environ['SPOTIFY_CLIENT_SECRET']}"
         auth_encoded = b64encode(auth_str.encode())
         # print(auth_str)
         # print(auth_encoded)
-        print(auth_encoded.decode())
+        # print(auth_encoded.decode())
         response = requests.post(SPOTIFY_AUTH_URL,
             headers={
                 "Authorization": "Basic " + auth_encoded.decode(),
@@ -132,7 +165,6 @@ class SpotifyWrapper():
                 "grant_type": "client_credentials"
             }
         )
-        
         assert response.ok, "Could not get Spotify API token."
 
         return response.json()['access_token']
@@ -142,17 +174,10 @@ class SpotifyWrapper():
         """
         Create a query string to put in the Spotify search
         Inputs:
-        - filters: a list of filters. 
-        possible ones are 
-        album, artist, track, year, upc, tag:hipster, tag:new, isrc, and genre
+        - filters: a dict of filters. 
         """
-
         search_str = query + ' '
         for filterType in filters:
             search_str += f'{filterType}:{filters[filterType]} '
-
-        print()
-        print(search_str)
-        print(urllib.parse.quote_plus(search_str))
 
         return search_str
