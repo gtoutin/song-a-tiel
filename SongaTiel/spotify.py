@@ -34,19 +34,31 @@ class SpotifyWrapper():
         assert any([song, album, artist]), 'Must provide a song, album, or artist'
         assert isinstance(infoTypeRaw, Type), 'Info type is not an enumeration'
 
-        if infoTypeRaw is Type.SONG:
-            infoType = "track"  # Spotify calls a song a track
-        else:
-            infoType = infoTypeRaw.name.lower()
-
-        ## Format query string
+        # Determine filters
         filterArgs = {
             "track": song,
             "album": album,
             "artist": artist
         }
+        if infoTypeRaw is Type.SONG:
+            print('a')
+            infoType = "track"  # Spotify calls a song a track
+        elif infoTypeRaw is Type.ALBUM:
+            print('b')
+            filterArgs.pop('track', None)
+            infoType = "album"  # Spotify calls a song a track
+        elif infoTypeRaw is Type.ARTIST:
+            print('c')
+            infoType = "artist"  # Spotify calls a song a track
+        else:
+            print('d')
+            infoType = str(infoTypeRaw.name.lower())
+
+        ## Format query string
         # yeet empty arguments
         filters = { arg:filterArgs[arg] for arg in filterArgs if filterArgs[arg] }
+        print('FILTERS!!!!')
+        print(filters)
         try:
             # get the item the user is looking for
             mainArg = filterArgs[infoType]
@@ -59,13 +71,13 @@ class SpotifyWrapper():
 
         params = {
             "q": q,
-            "type": infoType,
+            "type": infoType
         }
         print(params)
-
+        # return
         # Hit the search endpoint. type=infoType, other params used in query string q
         searchJson = self._runQuery('search', params)
-        print(searchJson)
+        # print(searchJson)
 
         # Pull out the Spotify ID
         try:
@@ -74,7 +86,7 @@ class SpotifyWrapper():
         except:
             print('No results.')
             return {}
-
+        return
         # Hit the appropriate endpoint for the information type now that the ID is known
         infoJson = self._runQuery(f'{infoType}s/{spotify_id}')
         # print(infoJson)
@@ -130,7 +142,7 @@ class SpotifyWrapper():
 
         # HANDLE AUTH
         token = self._handle_auth()
-        # print(token)
+        print(token)
 
         response = requests.get(SPOTIFY_BASE_URL + path, params=params, headers={'Authorization':f'Bearer {token}'})
         # print(response.json())
@@ -139,7 +151,7 @@ class SpotifyWrapper():
             print('Page error.')
             return False
 
-        # print(response.url)
+        print(response.url)
         return response.json()
 
 
