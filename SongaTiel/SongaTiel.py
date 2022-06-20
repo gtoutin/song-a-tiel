@@ -65,7 +65,6 @@ class SongaTiel():
         sp = SpotifyWrapper()
         albumInfo = sp.search(Type.ALBUM, song, album, artist)
 
-
         return {
             "type": Type.ALBUM.name,
             "data": {
@@ -79,11 +78,16 @@ class SongaTiel():
 
 
     def _artist(self, artist, song='', album=''):
+        # Get info from Spotify
+        sp = SpotifyWrapper()
+        artistInfo = sp.search(Type.ARTIST, song, album, artist)
+
         return {
             "type": Type.ARTIST.name,
             "data": {
-                "albums": [],
-                "info": "",
-                "related_artists": []
+                "name": artistInfo.get('name',''),
+                "albums": artistInfo.get('albums',[]),
+                "genres": artistInfo.get('genres',[]),
+                "related_artists": artistInfo.get('related_artists',[])
             }
         }
