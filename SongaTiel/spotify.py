@@ -134,7 +134,9 @@ class SpotifyWrapper():
 
     
     def _artist(self, artistJson):
-        name = artistJson.get('name')
+        name = artistJson.get('name', '')
+        genres = artistJson.get('genres', [])
+
         if artistJson.get('id'):
             # Get albums
             albumsJson = self._runQuery(f'artists/{artistJson.get("id")}/albums',
@@ -156,7 +158,7 @@ class SpotifyWrapper():
         return {
             "name": name,
             "albums": albums,
-            "info": "",
+            "genres": genres,
             "related_artists": related_artists
         }
 
