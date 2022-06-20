@@ -41,26 +41,22 @@ class SpotifyWrapper():
             "artist": artist
         }
         if infoTypeRaw is Type.SONG:
-            print('a')
             infoType = "track"  # Spotify calls a song a track
         elif infoTypeRaw is Type.ALBUM:
-            print('b')
             filterArgs.pop('track', None)
             infoType = "album"  # Spotify calls a song a track
         elif infoTypeRaw is Type.ARTIST:
-            print('c')
             filterArgs.pop('track', None)
             filterArgs.pop('album', None)
             infoType = "artist"  # Spotify calls a song a track
         else:
-            print('d')
+            # This should never happen
             infoType = str(infoTypeRaw.name.lower())
 
-        ## Format query string
         # yeet empty arguments
         filters = { arg:filterArgs[arg] for arg in filterArgs if filterArgs[arg] }
-        print('FILTERS!!!!')
-        print(filters)
+        # print('FILTERS!!!!')
+        # print(filters)
         try:
             # get the item the user is looking for
             mainArg = filterArgs[infoType]
@@ -68,6 +64,7 @@ class SpotifyWrapper():
             print("Item to search for must not be empty.")
             raise ValueError
 
+        # Format query string
         q = self._make_query_str(filters, mainArg)
         # print(q)
 
@@ -75,7 +72,7 @@ class SpotifyWrapper():
             "q": q,
             "type": infoType
         }
-        print(params)
+        # print(params)
         # return
         # Hit the search endpoint. type=infoType, other params used in query string q
         searchJson = self._runQuery('search', params)
@@ -88,20 +85,20 @@ class SpotifyWrapper():
         except:
             print('No results.')
             return {}
-        return
+        
         # Hit the appropriate endpoint for the information type now that the ID is known
         infoJson = self._runQuery(f'{infoType}s/{spotify_id}')
         # print(infoJson)
 
         # Use infoType to clean up the JSON and prep for return to the user
         if infoType == "track":
-            print(self._track(infoJson))
+            # print(self._track(infoJson))
             return self._track(infoJson)
         elif infoType == "album":
-            print(self._album(infoJson))
+            # print(self._album(infoJson))
             return self._album(infoJson)
         else:
-            print(self._artist(infoJson))
+            # print(self._artist(infoJson))
             return self._artist(infoJson)
     
 
@@ -135,6 +132,34 @@ class SpotifyWrapper():
             "date_released": date_released
         }
 
+    
+    def _artist(self, artistJson):
+        name = artistJson.get('name')
+        if artistJson.get('id'):
+            print('HIT artist/albums')
+            albumsJson = self._runQuery(f'artists/{artistJson.get("id")}/albums',
+                params={
+                    "limit": 50,
+                    "include_groups": "album,compilation"
+                }
+            )
+            # Extract albums and remove duplicates
+            albums = list(set([album.get('name') for album in albumsJson['items']]))
+        else:
+            albums = []
+        print({
+            "name": name,
+            "albums": albums,
+            "info": "",
+            "related_artists": ""
+        })
+        return {
+            "name": name,
+            "albums": albums,
+            "info": "",
+            "related_artists": ""
+        }
+
 
     def _runQuery(self, path, params={}):
         '''Helper function to actually do the query.
@@ -147,11 +172,11 @@ class SpotifyWrapper():
         print(token)
 
         response = requests.get(SPOTIFY_BASE_URL + path, params=params, headers={'Authorization':f'Bearer {token}'})
-        # print(response.json())
+        print(response.json())
 
         if not response.ok:
             print('Page error.')
-            return False
+            exit
 
         print(response.url)
         return response.json()
