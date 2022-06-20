@@ -11,3 +11,4 @@ a = spotify.SpotifyWrapper()
 st = SongaTiel.SongaTiel()
 
 print(st.search(song='birdhouse in your soul', album='flood', artist='they might be giants'))
+# print(st.search(song='hillbilly drummer girl', album='flood', artist='they might be giants'))

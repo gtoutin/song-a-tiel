@@ -22,9 +22,6 @@ class SpotifyWrapper():
     def __init__(self):
         pass
 
-    def request(self, endpoint, base_url=SPOTIFY_BASE_URL):
-        pass
-
 
     def search(self, infoTypeRaw, song='', album='', artist=''):
         """
@@ -76,7 +73,7 @@ class SpotifyWrapper():
             # print(spotify_id)
         except:
             print('No results.')
-            return
+            return {}
 
         # Hit the appropriate endpoint for the information type now that the ID is known
         infoJson = self._runQuery(f'{infoType}s/{spotify_id}')
@@ -100,11 +97,11 @@ class SpotifyWrapper():
         album = trackJson['album']['name']
         length = str(datetime.timedelta(seconds=trackJson['duration_ms']/1000))
         return {
-            "name": name,
-            "artist": artist,
-            "album": album,
+            "name": name or "",
+            "artist": artist or "",
+            "album": album or "",
             "year": "",
-            "length": length,
+            "length": length or "",
             "related_songs":""
         }
     
