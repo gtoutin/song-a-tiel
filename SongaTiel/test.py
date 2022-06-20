@@ -5,9 +5,12 @@ import SongaTiel
 a = spotify.SpotifyWrapper()
 
 # a.search(Type.SONG, song='birdhouse in your soul', album='flood', artist='they might be giants')
-a.search(Type.ALBUM, song='birdhouse in your soul', album='flood', artist='they might be giants')
-a.search(Type.ALBUM, album='flood', artist='they might be giants')
-# a.search(Type.ARTIST, song='birdhouse in your soul', artist='they might be giants')
+# a.search(Type.ALBUM, song='birdhouse in your soul', album='flood', artist='they might be giants')
+# a.search(Type.ALBUM, album='flood', artist='they might be giants')
+a.search(Type.ARTIST, song='birdhouse in your soul', artist='they might be giants')
+a.search(Type.ARTIST, song='birdhouse in your soul', album='flood', artist='they might be giants')
+a.search(Type.ARTIST, album='flood', artist='they might be giants')
+a.search(Type.ARTIST, artist='they might be giants')
 
 st = SongaTiel.SongaTiel()
 

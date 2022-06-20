@@ -49,6 +49,8 @@ class SpotifyWrapper():
             infoType = "album"  # Spotify calls a song a track
         elif infoTypeRaw is Type.ARTIST:
             print('c')
+            filterArgs.pop('track', None)
+            filterArgs.pop('album', None)
             infoType = "artist"  # Spotify calls a song a track
         else:
             print('d')
