@@ -136,7 +136,7 @@ class SpotifyWrapper():
     def _artist(self, artistJson):
         name = artistJson.get('name')
         if artistJson.get('id'):
-            print('HIT artist/albums')
+            # Get albums
             albumsJson = self._runQuery(f'artists/{artistJson.get("id")}/albums',
                 params={
                     "limit": 50,
@@ -144,20 +144,20 @@ class SpotifyWrapper():
                 }
             )
             # Extract albums and remove duplicates
-            albums = list(set([album.get('name') for album in albumsJson['items']]))
+            albums = list(set([album.get('name') for album in albumsJson.get('items',{})]))
+
+            # Get related artists
+            relatedJson = self._runQuery(f'artists/{artistJson.get("id")}/related-artists')
+            related_artists = [artist.get('name','') for artist in relatedJson.get('artists',{})]
         else:
             albums = []
-        print({
-            "name": name,
-            "albums": albums,
-            "info": "",
-            "related_artists": ""
-        })
+            related_artists = []
+        
         return {
             "name": name,
             "albums": albums,
             "info": "",
-            "related_artists": ""
+            "related_artists": related_artists
         }
 
 
