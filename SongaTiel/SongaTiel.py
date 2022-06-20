@@ -61,13 +61,19 @@ class SongaTiel():
 
 
     def _album(self, album, song='', artist=''):
+        # Get info from Spotify
+        sp = SpotifyWrapper()
+        albumInfo = sp.search(Type.ALBUM, song, album, artist)
+
+
         return {
             "type": Type.ALBUM.name,
             "data": {
-                "artist": "",
-                "tracklist": "",
-                "length": "",
-                "date_released": "YYYY-MM-DD"
+                "name": albumInfo.get('name',''),
+                "artist": albumInfo.get('artist',''),
+                "tracklist": albumInfo.get('tracklist',[]),
+                "length": albumInfo.get('length',''),
+                "release_date": albumInfo.get('release_date','')
             }
         }
 

@@ -8,6 +8,9 @@ Lookup songs and bands and discover new ones
 - [ ] Makefile
 - [ ] Set up the Flask app
 
+## FUTURE WORK
+- [ ] Fix length (duration) formatting
+- [ ] Implement error responses. aka say no results instead of regular format w empty strings
 
 ## Endpoints
 - [ ] /artist/{name}/similar
