@@ -62,7 +62,9 @@ Lookup songs and bands and discover new ones
 `python3 SongaTiel/__main__.py --album "are we not men?" --artist devo`
 ### things on their own
 `python3 SongaTiel/__main__.py --song birdhouse`
+
 `python3 SongaTiel/__main__.py --album weezer`
+
 `python3 SongaTiel/__main__.py --artist "they might be giants"`
 ### all 3 at once
 #### good
