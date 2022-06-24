@@ -52,6 +52,7 @@ Lookup songs and bands and discover new ones
     - [ ] Related: cleanly handle errors. I have assertion errors for now
 - [ ] Make module runnable. aka `python3 -m SongaTiel --whatever-args` or better yet `./SongaTiel --whatever`
 - [ ] More docs are always good. Say exactly what could be empty in the schema and what is required
+- [ ] Don't return lyrics for the wrong song. Try "When He Died" by Lemon Demon.
 
 ## TEST CASES
 ### song + artist = song

@@ -11,9 +11,8 @@ run-docker:
 	-v `pwd`:/song-a-tiel \
 	-w /song-a-tiel \
 	-p 5000:5000 \
-	--entrypoint '' \
 	--env-file .env \
-	song-a-tiel-backend bash
+	song-a-tiel-backend
 
 exec-docker:
 	docker exec -it song-a-tiel-backend bash

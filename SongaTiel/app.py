@@ -3,14 +3,26 @@ Flask app
 """
 
 
-from flask import Flask
+from flask import Flask, request, Response
+from SongaTiel import SongaTiel
+import json
 
 
-app = Flask(__name__)
+app = Flask(__name__)   # Flask app
+st = SongaTiel()        # SongaTiel object
 
 @app.route('/')
 def info():
-    return 'song-a-tiel! Wheeeee'
+    # Grab the query params from the request.args dict
+    song, album, artist = request.args.get("song",""), request.args.get("album",""), request.args.get("artist","")
+
+    # Run the search
+    st_results = st.search(song=song, album=album, artist=artist)
+    
+    # Make and return the search results
+    resp = Response(json.dumps(st_results))
+    resp.content_type = "application/json"
+    return resp
 
 
 
