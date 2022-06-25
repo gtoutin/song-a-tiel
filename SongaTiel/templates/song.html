@@ -25,7 +25,15 @@
         </div>
         <div>
             <h3>Lyrics</h3>
-            <p>{{lyrics}}</p>
+            <pre>{{lyrics}}</pre>
+        </div>
+        <div>
+            <h3>Related Songs</h3>
+            {% for rel_song, rel_artists in related_songs.items() %}
+                <h4>{{rel_song}}</h4>
+                <h5>by {{ rel_artists|join(' and ') }}</h5>
+                
+            {% endfor %}
         </div>
         <script src="" async defer></script>
     </body>

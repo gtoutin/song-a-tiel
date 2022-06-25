@@ -42,6 +42,7 @@ def info():
             release_date=st_data['release_date'],
             lyrics=st_data['lyrics'],
             length=st_data['length'],
+            related_songs=st_data['related_songs'],
         )
     elif st_results['type'] == Type.ALBUM.name:
         print('Serving album page')
