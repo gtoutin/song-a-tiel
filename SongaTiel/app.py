@@ -58,7 +58,7 @@ def info():
         )
     elif st_results['type'] == Type.ERROR.name:
         print('Serving error page')
-        return render_template('error.html')
+        return render_template('no_results.html')
 
 
 
