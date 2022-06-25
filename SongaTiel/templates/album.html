@@ -7,7 +7,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
+        <title>Album Results - Song-A-Tiel</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -20,12 +20,13 @@
             <button>Do another search</button>
         </form>
         <h1>Album Results</h1>
-        <div>
+        <div id="basicinfo">
             <h2>{{album}} by {{artist}}</h2>
             <p>Released on {{release_date}}</p>
             <p>Duration: {{length}}</p>
         </div>
-        <div>
+        <br>
+        <div id="backgrounddiv">
             <h3>Tracklist</h3>
             <ul>
                 {% for track in tracklist %}

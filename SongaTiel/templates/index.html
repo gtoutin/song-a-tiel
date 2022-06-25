@@ -16,27 +16,29 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <h1>Song-A-Tiel</h1>
-        <h3>Find your music!</h3>
+        <div id="backgrounddiv">
 
-        <form action="/results/" method="get">
-            <div>
-                <label for="song">Song</label>
-                <input name="song" id="song">
+            <div id="titlediv">
+                <h1>Song-A-Tiel</h1>
+            <h3>Find your music!</h3>
             </div>
-            <div>
-                <label for="album">Album</label>
-                <input name="album" id="album">
+            
+            <div id="formdiv">
+                <form action="/results/" method="get">
+                    <label for="song">Song</label>
+                    <input name="song" id="song">
+                    <br>
+                    <label for="album">Album</label>
+                    <input name="album" id="album">
+                    <br>
+                    <label for="artist">Artist</label>
+                    <input name="artist" id="artist">
+                    <br>
+                    <button>Search!</button>
+                    <button type="reset">Clear</button>
+                </form>
             </div>
-            <div>
-                <label for="artist">Artist</label>
-                <input name="artist" id="artist">
-            </div>
-            <div>
-                <button>Search!</button>
-                <button type="reset">Clear</button>
-            </div>
-        </form>
+        </div>
         
         <!-- <script src="" async defer></script> -->
     </body>

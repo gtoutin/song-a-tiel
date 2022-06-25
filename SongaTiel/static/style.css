@@ -1,4 +1,57 @@
 body {
-    background-color: black;
-    color:chartreuse;
+    background-color: #161853;
+    color:#F5F5F5;
+    padding: 20px;
+    font-family: 'Fredoka One', cursive;
+}
+/* form {
+    width: 500px;
+    padding-left: 50px;
+} */
+/* #titlediv {
+    width: 300px;
+    padding-left: 50px;
+} */
+/* #formdiv {
+    background-color: darkorange;
+    border-radius: 25px;
+    padding: 10px;
+
+    display: inline-block;
+} */
+#lyricsdiv, #formdiv, #basicinfo, #backgrounddiv {
+    background-color: #F05454;
+    display: inline-block;
+    border-radius: 25px;
+    padding: 10px;
+    text-align: center;
+    margin: 10px;
+}
+input {
+    display: flex;
+    justify-content: right;
+}
+label {
+    display: flex;
+    justify-content: left;
+}
+pre, #formdiv, #innerdiv, li {
+    background-color: #121212;
+    margin: 10px;
+    border-radius: 25px;
+    padding: 10px;
+}
+#innerdiv {
+    opacity: 50%;
+}
+.flexthis {
+    display: flex;
+    align-items: flex-start;
+}
+ul {
+    list-style-type: none;
+    padding: 0em;
+}
+pre {
+    font-family: 'Fredoka One', cursive;
 }

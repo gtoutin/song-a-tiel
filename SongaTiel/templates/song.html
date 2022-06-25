@@ -5,6 +5,9 @@
 <!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
     <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet"> 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Song Results - Song-A-Tiel</title>
@@ -20,22 +23,29 @@
             <button>Do another search</button>
         </form>
         <h1>Song Results</h1>
-        <div>
-            <h2>{{song}} by {{artist}}</h2>
-            <h3>On the album {{album}}</h3>
-            <p>Released on {{release_date}}</p>
-            <p>Duration: {{length}}</p>
-        </div>
-        <div>
-            <h3>Lyrics</h3>
-            <pre>{{lyrics}}</pre>
-        </div>
-        <div>
-            <h3>Related Songs</h3>
-            {% for rel_song, rel_artists in related_songs.items() %}
-                <h4>{{rel_song}}</h4>
-                <h5>by {{ rel_artists|join(' and ') }}</h5>
-            {% endfor %}
+        <div class="flexthis">
+            <div id="basicinfo">
+                <h2>{{song}} by {{artist}}</h2>
+                <h3>On the album {{album}}</h3>
+                <p>Released on {{release_date}}</p>
+                <p>Duration: {{length}}</p>
+            </div>
+            <div id="lyricsdiv">
+                <h3>Lyrics</h3>
+                <pre>{{lyrics}}</pre>
+            </div>
+            <div id="backgrounddiv">
+                <h3>Related Songs</h3>
+                <ul>
+                    {% for rel_song, rel_artists in related_songs.items() %}
+                    <li>
+                        <h4>"{{rel_song}}"</h4>
+                        <h5>by {{ rel_artists|join(' and ') }}</h5>
+                    </li>
+                    <br>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         <script src="" async defer></script>
     </body>
