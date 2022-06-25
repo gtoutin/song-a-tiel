@@ -52,12 +52,16 @@ def info():
             artist=st_data['artist'],
             release_date=st_data['release_date'],
             length=st_data['length'],
+            tracklist=st_data['tracklist'],
         )
     elif st_results['type'] == Type.ARTIST.name:
         print('Serving artist page')
         # TODO: albums, genres, related artists
         return render_template('artist.html',
             artist=st_data['name'],
+            albums=st_data['albums'],
+            genres=st_data['genres'],
+            rel_artists=st_data['related_artists'],
         )
 
 

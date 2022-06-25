@@ -22,6 +22,14 @@
             <p>Released on {{release_date}}</p>
             <p>Duration: {{length}}</p>
         </div>
+        <div>
+            <h3>Tracklist</h3>
+            <ul>
+                {% for track in tracklist %}
+                <li>{{track}}</li>
+                {% endfor %}
+            </ul>
+        </div>
         <script src="" async defer></script>
     </body>
 </html>
