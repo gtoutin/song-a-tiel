@@ -7,4 +7,4 @@ from enum import Enum
 
 
 class Type(Enum):
-    SONG, ALBUM, ARTIST = 1, 2, 3
+    SONG, ALBUM, ARTIST, ERROR = 1, 2, 3, 4

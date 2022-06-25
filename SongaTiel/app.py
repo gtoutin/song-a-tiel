@@ -27,14 +27,9 @@ def info():
     # Run the search
     st_results = st.search(song=song, album=album, artist=artist)
     st_data = st_results['data']
-    
-    # # Make and return the search results
-    # resp = Response(json.dumps(st_results))
-    # resp.content_type = "application/json"
 
     if st_results['type'] == Type.SONG.name:
         print('Serving song page')
-        # TODO: related songs and show lyrics properly
         return render_template('song.html',
             song=st_data['name'],
             artist=st_data['artist'],
@@ -46,7 +41,6 @@ def info():
         )
     elif st_results['type'] == Type.ALBUM.name:
         print('Serving album page')
-        # TODO: release date
         return render_template('album.html',
             album=st_data['name'],
             artist=st_data['artist'],
@@ -56,13 +50,15 @@ def info():
         )
     elif st_results['type'] == Type.ARTIST.name:
         print('Serving artist page')
-        # TODO: albums, genres, related artists
         return render_template('artist.html',
             artist=st_data['name'],
             albums=st_data['albums'],
             genres=st_data['genres'],
             rel_artists=st_data['related_artists'],
         )
+    elif st_results['type'] == Type.ERROR.name:
+        print('Serving error page')
+        return render_template('error.html')
 
 
 

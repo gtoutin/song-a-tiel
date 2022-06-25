@@ -29,6 +29,10 @@ class SongaTiel():
             else:  # artist on its own
                 resultData = self._artist(artist, song=song, album=album)
 
+        # No results check
+        if not resultData['data'].get('name'):
+            resultData['type'] = Type.ERROR.name
+
         return resultData
 
     
