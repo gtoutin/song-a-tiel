@@ -48,6 +48,7 @@ def results():
             release_date=st_data['release_date'],
             length=st_data['length'],
             tracklist=st_data['tracklist'],
+            art_link=st_data['album_art'],
         )
     elif st_results['type'] == Type.ARTIST.name:
         print('Serving artist page')

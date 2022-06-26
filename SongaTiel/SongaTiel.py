@@ -94,7 +94,8 @@ class SongaTiel():
                 "artist": albumInfo.get('artist',''),
                 "tracklist": albumInfo.get('tracklist',[]),
                 "length": albumInfo.get('length',''),
-                "release_date": albumInfo.get('release_date','')
+                "release_date": albumInfo.get('release_date',''),
+                "album_art": albumInfo.get('album_art','')
             }
         }
 

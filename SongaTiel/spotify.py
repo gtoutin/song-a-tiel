@@ -146,12 +146,14 @@ class SpotifyWrapper():
         album_duration = sum(tracks_duration) / 1000  # the track durations are in ms. convert to s
         length = str(datetime.timedelta(seconds=album_duration))
         length = length.split('.')[0]  # remove the extra milliseconds
+        art_link = albumJson.get('images')[0]['url']
         return {
             "name": name,
             "artist": artist,
             "tracklist": tracklist,
             "length": length,
-            "release_date": release_date
+            "release_date": release_date,
+            "album_art": art_link
         }
 
     

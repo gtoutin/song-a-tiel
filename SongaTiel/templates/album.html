@@ -21,13 +21,16 @@
         <![endif]-->
         <h1>Album Results</h1>
         <form action="/">
-            <button>Do another search</button>
+            <button>Search again</button>
         </form>
         <div class="flexthis">
-            <div id="basicinfo">
-                <h2>{{album}} by {{artist}}</h2>
-                <p>Released on {{release_date}}</p>
-                <p>Duration: {{length}}</p>
+            <div>
+                <div id="basicinfo">
+                    <h2>{{album}} by {{artist}}</h2>
+                    <p>Released on {{release_date}}</p>
+                    <p>Duration: {{length}}</p>
+                </div>
+                <img src="{{art_link}}"/>
             </div>
             <div id="backgrounddiv">
                 <h3>Tracklist</h3>

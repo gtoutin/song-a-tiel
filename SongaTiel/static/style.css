@@ -43,7 +43,6 @@ pre, #formdiv, #innerdiv, li {
     margin: 10px;
     border-radius: 25px;
     padding: 10px;
-    /* color: #CCBCAB; */
 }
 #innerdiv {
     opacity: 50%;
@@ -62,4 +61,7 @@ pre {
 .frontpage {
     width: 25%;
     min-width: 300px;
+}
+img {
+    border-radius: 10%;
 }
