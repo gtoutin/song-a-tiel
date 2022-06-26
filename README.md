@@ -30,7 +30,8 @@ Note the `"type"` in the returned JSON. If the returned data is in an error stat
         "artist": "",
         "tracklist": [],
         "length": "",
-        "release_date": ""
+        "release_date": "",
+        "album_art": ""
     }
 }
 ```
