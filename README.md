@@ -3,6 +3,7 @@ Lookup songs and bands and discover new ones
 
 
 ## SCHEMAS
+Note the `"type"` in the returned JSON. If the returned data is in an error state, `"type"` will be `ERROR` instead of whichever info type was requested.
 ### song
 ```JSON
 {
