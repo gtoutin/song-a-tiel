@@ -1,43 +1,49 @@
 body {
-    background-color: #161853;
-    color:#F5F5F5;
+    background-color: #020204;
+    color:#CCBCAB;
     padding: 20px;
     font-family: 'Fredoka One', cursive;
 }
 #lyricsdiv, #basicinfo, #backgrounddiv {
-    background-color: #F05454;
+    background-color: #D6C050;
     border-radius: 25px;
     padding: 10px;
     text-align: center;
     margin: 10px;
+    color: #020204;
 }
 input {
     width: 80%;
     margin-bottom: 10px;
-    background-color: #F5F5F5;
-    
+    background-color: #CCBCAB;
+
 }
 label {
     display: flex;
     justify-content: center;
 }
 button {
-    color: #F5F5F5;
-    background-color: #F05454;
+    color: #020204;
+    background-color: #D42E10;
     border: none;
     font-family: 'Fredoka One', cursive;
-    border-radius: 25%;
-    padding: 10px;
+    border-radius: 50%;
+    /* padding: 10px; */
+    width: 60px;
+    height: 60px;
+    margin: 10px;
+    text-align: center;
 }
 form {
     display: flexbox;
     justify-content: center;
 }
 pre, #formdiv, #innerdiv, li {
-    background-color: #121212;
+    background-color: #786A67;
     margin: 10px;
     border-radius: 25px;
     padding: 10px;
+    /* color: #CCBCAB; */
 }
 #innerdiv {
     opacity: 50%;

@@ -196,7 +196,14 @@ class SpotifyWrapper():
             params: any query params that might be present'''
 
         # HANDLE AUTH
-        token = self._handle_auth()
+        while True:
+            try:
+                token = self._handle_auth()
+                break
+            except:
+                print("Problem with getting token, trying again")
+                continue
+
         # print(token)
 
         response = requests.get(SPOTIFY_BASE_URL + path, params=params, headers={'Authorization':f'Bearer {token}'})
