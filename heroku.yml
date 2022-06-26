@@ -1,5 +1,5 @@
 build:
   docker:
-    song-a-tiel-backend: Dockerfile
+    web: Dockerfile
 run:
-  song-a-tiel-backend: make heroku-run-docker
+  web: make heroku-run-docker
