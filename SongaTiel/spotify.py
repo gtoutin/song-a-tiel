@@ -1,8 +1,5 @@
 """
-Functions and stuff for wrangling spotify
-
-intended use: 
-SpotifyWrapper.
+API wrapper for Spotify
 """
 
 import os
@@ -19,6 +16,7 @@ SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/api/token'
 
 
 class SpotifyWrapper():
+    """API wrapper for Spotify API"""
     def __init__(self):
         pass
 
@@ -28,7 +26,7 @@ class SpotifyWrapper():
         SongaTiel uses this directly.
         Inputs: type, song, album, artist.
         - infotype is an instance of Type. example: Type.SONG
-        Output: all necessary info.
+        Output: all info defined in the schema.
         """
 
         assert any([song, album, artist]), 'Must provide a song, album, or artist'
@@ -55,8 +53,7 @@ class SpotifyWrapper():
 
         # yeet empty arguments
         filters = { arg:filterArgs[arg] for arg in filterArgs if filterArgs[arg] }
-        # print('FILTERS!!!!')
-        # print(filters)
+
         try:
             # get the item the user is looking for
             mainArg = filterArgs[infoType]
@@ -66,43 +63,36 @@ class SpotifyWrapper():
 
         # Format query string
         q = self._make_query_str(filters, mainArg)
-        # print(q)
 
         params = {
             "q": q,
             "type": infoType
         }
-        # print(params)
-        # return
+
         # Hit the search endpoint. type=infoType, other params used in query string q
         searchJson = self._runQuery('search', params)
-        # print(searchJson)
 
         # Pull out the Spotify ID
         try:
             spotify_id = searchJson[f'{infoType}s']['items'][0]['id']
-            # print(spotify_id)
         except:
             print('No results.')
             return {}
         
         # Hit the appropriate endpoint for the information type now that the ID is known
         infoJson = self._runQuery(f'{infoType}s/{spotify_id}')
-        # print(infoJson)
 
         # Use infoType to clean up the JSON and prep for return to the user
         if infoType == "track":
-            # print(self._track(infoJson))
             return self._track(infoJson)
         elif infoType == "album":
-            # print(self._album(infoJson))
             return self._album(infoJson)
         else:
-            # print(self._artist(infoJson))
             return self._artist(infoJson)
     
 
     def _track(self, trackJson):
+        """Return json info about a song (aka a track in Spotify terminology)"""
         name = trackJson['name']
         artist = trackJson['artists'][0]['name']
         release_date = trackJson['album']['release_date']
@@ -113,7 +103,9 @@ class SpotifyWrapper():
         if trackJson.get('artists'):
             artistJson = trackJson.get('artists')
 
-            # FIXME: hardcoded in for the demo since most artists seem to not have genres returned here despite the spotify docs
+            # HACK: seed the genre as geek rock just to choose one
+            # this is because most artists seem to not have genres returned here 
+            # despite the spotify docs saying that they will return genres
             if not artistJson[0].get('genres'):
                 artistJson[0]['genres'] = ['geek rock']
             
@@ -144,6 +136,7 @@ class SpotifyWrapper():
     
 
     def _album(self, albumJson):
+        """Return json info about an album"""
         name = albumJson['name']
         artist = albumJson['artists'][0]['name']
         release_date = albumJson['release_date']
@@ -160,6 +153,7 @@ class SpotifyWrapper():
 
     
     def _artist(self, artistJson):
+        """Return json info about an artist"""
         name = artistJson.get('name', '')
         genres = artistJson.get('genres', [])
 
@@ -204,29 +198,22 @@ class SpotifyWrapper():
                 print("Problem with getting token, trying again")
                 continue
 
-        # print(token)
-
         response = requests.get(SPOTIFY_BASE_URL + path, params=params, headers={'Authorization':f'Bearer {token}'})
-        # print(response.json())
 
         if not response.ok:
             print('Page error.')
             exit
 
-        # print(response.url)
         return response.json()
 
 
     def _handle_auth(self):
         """
-        Handles Spotify API authorization.
+        Handles Spotify API authentication.
         Uses the env vars to get a token
         """
         auth_str = f"{os.environ['SPOTIFY_CLIENT_ID']}:{os.environ['SPOTIFY_CLIENT_SECRET']}"
         auth_encoded = b64encode(auth_str.encode())
-        # print(auth_str)
-        # print(auth_encoded)
-        # print(auth_encoded.decode())
         response = requests.post(SPOTIFY_AUTH_URL,
             headers={
                 "Authorization": "Basic " + auth_encoded.decode(),

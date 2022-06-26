@@ -1,3 +1,7 @@
+"""
+This file contains tests. To run the tests, uncomment the tests you want and run this file.
+"""
+
 from infotype import Type
 import spotify
 import SongaTiel

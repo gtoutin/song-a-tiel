@@ -12,6 +12,9 @@ from spotify import SpotifyWrapper
 from lyrics import Lyrics
 
 class SongaTiel():
+    """
+    Main searching interface. Ties both APIs together in a user-facing easy-to-use form.
+    """
     def __init__(self):
         pass
 
@@ -45,6 +48,7 @@ class SongaTiel():
 
     
     def _song(self, song, album='', artist=''):
+        """Return info about a song"""
         # Get info from Spotify
         sp = SpotifyWrapper()
         songInfo = sp.search(Type.SONG, song, album, artist)
@@ -78,6 +82,7 @@ class SongaTiel():
 
 
     def _album(self, album, song='', artist=''):
+        """Return info about an album"""
         # Get info from Spotify
         sp = SpotifyWrapper()
         albumInfo = sp.search(Type.ALBUM, song, album, artist)
@@ -95,6 +100,7 @@ class SongaTiel():
 
 
     def _artist(self, artist, song='', album=''):
+        """Return info about an artist"""
         # Get info from Spotify
         sp = SpotifyWrapper()
         artistInfo = sp.search(Type.ARTIST, song, album, artist)

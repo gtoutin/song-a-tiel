@@ -1,10 +1,9 @@
 """
-Flask app
+Flask app for the web app version of SongATiel
 """
 
 
 from flask import Flask, request, Response, render_template
-import json
 
 from SongaTiel import SongaTiel
 from infotype import Type
@@ -16,11 +15,13 @@ st = SongaTiel()        # SongaTiel object
 
 @app.route('/', methods=['GET'])
 def homepage():
+    """Serve the homepage"""
     return render_template('index.html')
 
 
 @app.route('/results/')
-def info():
+def results():
+    """Serve a results page. Could be song, album, artist, or the No Results page"""
     # Grab the query params from the request.args dict
     song, album, artist = request.args.get("song",""), request.args.get("album",""), request.args.get("artist","")
 

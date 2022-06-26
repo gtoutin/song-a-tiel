@@ -1,10 +1,15 @@
-### SongaTiel module
+"""
+Main SongATiel module for the CLI version
+"""
 
 import argparse
 from SongaTiel import SongaTiel
 
 
 def main():
+    """
+    Parse and validate CLI args. Use the args in a SongATiel search
+    """
     # handle args
     arg_parser = argparse.ArgumentParser(
         prog='SongaTiel',

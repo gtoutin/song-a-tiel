@@ -1,8 +1,7 @@
 """
-Functions for interacting with the ChartLyrics API for getting lyrics
+Wrapper for interacting with the ChartLyrics API for getting lyrics
 
-The artist, song to search lyrics for are REQUIRED query params to SearchLyric
-The lyricId and lyricCheckSum are query params to GetLyric
+Will return song lyrics given the artist and song for which to search lyrics
 """
 
 from difflib import get_close_matches
@@ -16,6 +15,9 @@ LYRICS_BASE_URL = 'http://api.chartlyrics.com/apiv1.asmx/'
 
 
 class Lyrics():
+    """
+    ChartLyrics API Wrapper
+    """
     def __init__(self):
         pass
 
