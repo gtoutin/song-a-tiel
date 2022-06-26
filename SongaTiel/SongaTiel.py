@@ -18,6 +18,14 @@ class SongaTiel():
     def search(self, song='', album='', artist=''):
         '''Searches for a song, album, and/or artist'''
 
+        # If user didn't supply anything, just return error
+        if not any([song, album, artist]):
+            resultData = {
+                "type": Type.ERROR.name,
+                "data": {}
+            }
+            return resultData
+
         ## Follow the rules to determine which function to use
         if song:  # song + anything = song
             # use other specified things if they are there

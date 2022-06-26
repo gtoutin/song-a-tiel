@@ -5,6 +5,9 @@
 <!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
     <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet"> 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Artist Results - Song-A-Tiel</title>
@@ -20,32 +23,34 @@
             <button>Do another search</button>
         </form>
         <h1>Artist Results</h1>
-        <div>
-            <h2>{{artist}}</h2>
-        </div>
-        <div>
-            <h3>Albums</h3>
-            <ul>
-                {% for album in albums %}
-                <li>{{album}}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div>
-            <h3>Genres</h3>
-            <ul>
-                {% for genre in genres %}
-                <li>{{genre}}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div>
-            <h3>Related Artists</h3>
-            <ul>
-                {% for rel_artist in rel_artists %}
-                <li>{{rel_artist}}</li>
-                {% endfor %}
-            </ul>
+        <div id="flexthis">
+            <div id="basicinfo">
+                <h2>{{artist}}</h2>
+            </div>
+            <div id="backgrounddiv">
+                <h3>Albums</h3>
+                <ul>
+                    {% for album in albums %}
+                    <li>{{album}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div id="backgrounddiv">
+                <h3>Genres</h3>
+                <ul>
+                    {% for genre in genres %}
+                    <li>{{genre}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div id="backgrounddiv">
+                <h3>Related Artists</h3>
+                <ul>
+                    {% for rel_artist in rel_artists %}
+                    <li>{{rel_artist}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         <script src="" async defer></script>
     </body>

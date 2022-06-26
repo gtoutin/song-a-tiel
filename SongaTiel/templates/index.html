@@ -5,6 +5,9 @@
 <!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
     <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet"> 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Song-A-Tiel</title>
@@ -16,28 +19,28 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <div id="backgrounddiv">
+        <div id="backgrounddiv" class="frontpage">
 
             <div id="titlediv">
                 <h1>Song-A-Tiel</h1>
             <h3>Find your music!</h3>
             </div>
             
-            <div id="formdiv">
-                <form action="/results/" method="get">
-                    <label for="song">Song</label>
-                    <input name="song" id="song">
-                    <br>
-                    <label for="album">Album</label>
-                    <input name="album" id="album">
-                    <br>
-                    <label for="artist">Artist</label>
-                    <input name="artist" id="artist">
-                    <br>
-                    <button>Search!</button>
-                    <button type="reset">Clear</button>
-                </form>
-            </div>
+            <form action="/results/" method="get">
+                    <div id="formdiv">
+                        <label for="song">Song</label>
+                        <input name="song">
+                        <br>
+                        <label for="album">Album</label>
+                        <input name="album">
+                        <br>
+                        <label for="artist">Artist</label>
+                        <input name="artist">
+                        <br>
+                        <button>Search!</button>
+                        <button type="reset">Clear</button>
+                    </div>
+            </form>
         </div>
         
         <!-- <script src="" async defer></script> -->
