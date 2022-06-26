@@ -10,7 +10,7 @@ run-docker:
 	--name song-a-tiel-backend \
 	-v `pwd`:/song-a-tiel \
 	-w /song-a-tiel \
-	-p ${PORT}:5000 \
+	-p 5000:5000 \
 	--env-file .env \
 	song-a-tiel-backend
 
