@@ -1,6 +1,20 @@
 # song-a-tiel
 Lookup songs and bands and discover new ones
 
+## Installation and Setup
+This project runs in docker.
+
+- `make build-docker`
+- `make run-docker`
+
+At this point, the website is up and running on localhost:5000.
+`make exec-docker` is available to get a shell inside the container if you wish to run the CLI.
+
+### CLI version
+- `make exec-docker`
+- `python SongaTiel/__main__.py --song <songname> --album <albumname> --artist <artistname>`
+
+See test cases below for examples.
 
 ## SCHEMAS
 Note the `"type"` in the returned JSON. If the returned data is in an error state, `"type"` will be `ERROR` instead of whichever info type was requested.

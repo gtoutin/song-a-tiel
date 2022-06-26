@@ -17,6 +17,7 @@ input {
     margin-bottom: 10px;
     background-color: #CCBCAB;
     text-align: center;
+    border-radius: 100%;
 }
 label {
     display: flex;
