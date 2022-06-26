@@ -16,7 +16,7 @@ input {
     width: 80%;
     margin-bottom: 10px;
     background-color: #CCBCAB;
-
+    text-align: center;
 }
 label {
     display: flex;
