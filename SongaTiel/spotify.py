@@ -98,6 +98,7 @@ class SpotifyWrapper():
         release_date = trackJson['album']['release_date']
         album = trackJson['album']['name']
         length = str(datetime.timedelta(seconds=trackJson['duration_ms']/1000))
+        length = length.split('.')[0]  # remove the extra milliseconds
 
         # Try to get related songs
         if trackJson.get('artists'):
@@ -143,11 +144,13 @@ class SpotifyWrapper():
         tracklist = [track['name'] for track in albumJson['tracks']['items']]
         tracks_duration = [track['duration_ms'] for track in albumJson['tracks']['items']]
         album_duration = sum(tracks_duration) / 1000  # the track durations are in ms. convert to s
+        length = str(datetime.timedelta(seconds=album_duration))
+        length = length.split('.')[0]  # remove the extra milliseconds
         return {
             "name": name,
             "artist": artist,
             "tracklist": tracklist,
-            "length": str(datetime.timedelta(seconds=album_duration)),
+            "length": length,
             "release_date": release_date
         }
 
