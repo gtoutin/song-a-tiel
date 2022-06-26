@@ -18,7 +18,7 @@ heroku-run-docker:
 	--name song-a-tiel-backend \
 	-v `pwd`:/song-a-tiel \
 	-w /song-a-tiel \
-	-p 5000:5000 \
+	-p $(PORT):$(PORT) \
 	-e SPOTIFY_CLIENT_ID -e SPOTIFY_CLIENT_SECRET \
 	song-a-tiel-backend
 
