@@ -194,14 +194,19 @@ class SpotifyWrapper():
             path: the path of the Spotify API
             params: any query params that might be present'''
 
-        # HANDLE AUTH
-        while True:
+        # HANDLE AUTH. Try 10 times before erroring
+        _failure = False
+        for _ in range(10):
             try:
                 token = self._handle_auth()
+                _failure = False
                 break
             except:
                 print("Problem with getting token, trying again")
+                _failure = True
                 continue
+        if _failure:
+            print('Had a problem getting API key')
 
         response = requests.get(SPOTIFY_BASE_URL + path, params=params, headers={'Authorization':f'Bearer {token}'})
 

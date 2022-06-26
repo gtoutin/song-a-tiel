@@ -6,4 +6,4 @@ COPY . /song-a-tiel
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT python SongaTiel/app.py
+CMD python SongaTiel/app.py
