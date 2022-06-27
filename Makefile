@@ -4,7 +4,6 @@ build-docker:
 	.
 
 run-docker:
-	include .env
 	docker run -it -d \
 	--name song-a-tiel-backend \
 	-v `pwd`:/song-a-tiel \
