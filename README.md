@@ -1,8 +1,10 @@
 # song-a-tiel
-Lookup songs and bands and discover new ones
+Look up songs and bands and discover new ones.
+
+[songatiel.herokuapp.com](https://songatiel.herokuapp.com)
 
 ## Installation and Setup
-This project runs in docker.
+This project runs in docker. If running locally, you will need your own Spotify credentials. See `.env_sample` for an example on how to format the `.env` file.
 
 - `make build-docker`
 - `make run-docker`
